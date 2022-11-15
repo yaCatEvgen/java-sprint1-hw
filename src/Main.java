@@ -4,49 +4,37 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         printMenu();
-        int numMenuUserIn = scanner.nextInt();
+        int menuNumber = scanner.nextInt();
+        StepTracker stepTracker = new StepTracker();
 
-        StepTracker steptr = new StepTracker();
-
-        while (numMenuUserIn != 0) {
-            // обработка разных случаев
-            if (numMenuUserIn == 1) {
+        while (menuNumber != 0) {
+            if (menuNumber == 1) {
                 System.out.println("Введите номер месяца от 0 до 11 ");
                 int indexMon = scanner.nextInt();
                 System.out.println("Введите номер дня от 0 до 29 ");
                 int indexDay = scanner.nextInt();
-
-                steptr.inputStep(indexMon, indexDay);
-            } else if (numMenuUserIn == 2) {
+                stepTracker.inputStep(indexMon, indexDay);
+            } else if (menuNumber == 2) {
                 System.out.println("Введите номер месяца от 0 до 11 ");
                 int indexMon = scanner.nextInt();
-
-                steptr.getStat(indexMon); // Лучшая серия: максимальное количество подряд идущих дней, в течение которых количество шагов за день было равно или выше целевого.
-            } else if (numMenuUserIn == 3) {
+                stepTracker.getStat(indexMon); // Лучшая серия: максимальное количество подряд идущих дней, в течение которых количество шагов за день было равно или выше целевого.
+            } else if (menuNumber == 3) {
                 System.out.println("Введите новое значение целевого количества шагов за день. Введённое значение не должно быть отрицательным.");
                 int newMastStep = scanner.nextInt();
-                steptr.cname(newMastStep);
-            } else if (numMenuUserIn == 4) {
+                stepTracker.setNewStepsTarget(newMastStep);
+            } else if (menuNumber == 4) {
                 break;
             } else {
-                System.out.println("Такой команды нет!!! Не растраивайтесь попробуте снова!");
+                System.out.println("Введена неправильная команда: " + menuNumber);
             }
-
             printMenu();
-            numMenuUserIn = scanner.nextInt();
+            menuNumber = scanner.nextInt();
         }
         System.out.println("Программа завершена");
     }
 
-
     private static void printMenu() {
         System.out.println("");
-        System.out.println("""
-                1 - Ввести количество шагов за определённый день;
-                2 - Напечатать статистику за определённый месяц;
-                3 - Изменить цель по количеству шагов в день;
-                4 - Выйти из приложения.""");
+        System.out.println("1 - Ввести количество шагов за определённый день;\n2 - Напечатать статистику за определённый месяц; \n3 - Изменить цель по количеству шагов в день; \n4 - Выйти из приложения.");
     }
-
-
 }

@@ -2,84 +2,78 @@ import java.util.*;
 
 public class StepTracker {
     Scanner scanner = new Scanner(System.in);
-    static int[][] masDayOfMonth = new int[12][30];
-    static int mastStep = 10000;
+    static int[][] monthData = new int[12][30];
+    static int stepsTarget = 10000;
 
     void inputStep(int indexMon, int indexDay) {
-        if ((indexMon < 0) || (indexMon > 11) || (indexDay < 0) || (indexDay > 29)) {
+        if (indexMon < 0 || indexMon > 11 || indexDay < 0 || indexDay > 29) {
             System.out.println("Введён не верный индекс");
         } else {
             System.out.println("Введите количество шагов за " + indexDay);
             int countStep = scanner.nextInt();
-            masDayOfMonth[indexMon][indexDay] = countStep;
+            monthData[indexMon][indexDay] = countStep;
         }
     }
 
-    void getStat(int indexMon) {
+    void getStat(int monthIndex) {
         int sumStep = 0;
         int maxStep = 0;
-        int schet = 1;
-        int[] poschet = new int[30];
-        int maxdaySeria = 0;
+        int count = 1;
+        int[] arrayCount = new int[30];
+        int maxDaysSeries = 0;
 
         for (int i = 0; i < 30; i++) {
             if (i != 29) {
-                System.out.print("день " + i + "-й:  " + masDayOfMonth[indexMon][i] + " шагов, ");
+                System.out.print("день " + i + "-й:  " + monthData[monthIndex][i] + " шагов, ");
             } else {
-                System.out.println("день " + i + "-й:  " + masDayOfMonth[indexMon][i] + " шагов.");
+                System.out.println("день " + i + "-й:  " + monthData[monthIndex][i] + " шагов.");
             }
 
-            sumStep += masDayOfMonth[indexMon][i];
+            sumStep += monthData[monthIndex][i];
 
-            if (masDayOfMonth[indexMon][i] >= maxStep) {
-                maxStep = masDayOfMonth[indexMon][i];
+            if (monthData[monthIndex][i] >= maxStep) {
+                maxStep = monthData[monthIndex][i];
             }
-
         }
 
-        for (int k = 0; k < poschet.length - 1; k++) {
-
-            if ((masDayOfMonth[indexMon][k] > mastStep) && (masDayOfMonth[indexMon][(k + 1)] > mastStep)) {
-                schet += 1;
+        for (int k = 0; k < arrayCount.length - 1; k++) {
+            if ((monthData[monthIndex][k] > stepsTarget) && (monthData[monthIndex][(k + 1)] > stepsTarget)) {
+                count += 1;
             } else {
-                schet = 1;
+                count = 1;
             }
 
-            if (schet != 1)
-                poschet[k] = schet;
+            if (count != 1)
+                arrayCount[k] = count;
             else
-                schet = 0;
-
-
+                count = 0;
         }
-
 
         System.out.println("Общее количество шагов за месяц " + sumStep + " шагов");
         System.out.println("Максимальное пройденное количество шагов за день в месяц " + maxStep + " шагов");
-        int midlStep = sumStep / 30;
-        System.out.println("Среднее пройденное количество шагов за день в месяц " + midlStep + " шагов");
+        double averageStepsPerDay = sumStep / 30;
+        System.out.println("Среднее пройденное количество шагов за день в месяц " + averageStepsPerDay + " шагов");
         converter(sumStep);
 
-        for (int j = 0; j < poschet.length; j++) {
-            if (poschet[j] > maxdaySeria)
-                maxdaySeria = poschet[j];
+        for (int j = 0; j < arrayCount.length; j++) {
+            if (arrayCount[j] > maxDaysSeries)
+                maxDaysSeries = arrayCount[j];
         }
-        System.out.println("Лучшая серия: " + maxdaySeria + " дней подряд");
+        System.out.println("Лучшая серия: " + maxDaysSeries + " дней подряд");
     }
 
-    private static void converter(int step) {
-        double km = step * 0.75;
-        int cal = step * 50 / 1000;
+    private static void converter(int steps) {
+        double km = steps * 0.75;
+        int kilocalories = steps * 50 / 1000;
         System.out.println("Пройденная дистанция (в км): " + km);
-        System.out.println("Количество сожжённых килокалорий: " + cal);
-
+        System.out.println("Количество сожжённых килокалорий: " + kilocalories);
     }
 
-    void cname(int newMastStep) {
-        if (newMastStep < 0) {
-            System.out.println("Введено неверное значение, попробуйте в следующий раз");
+    void setNewStepsTarget(int newTarget) {
+        if (newTarget < 0) {
+            System.out.println("Введено неверное значение:  " + newTarget + ". Цель не может быть отрицательной");
         } else {
-            mastStep = newMastStep;
+            stepsTarget = newTarget;
         }
     }
 }
